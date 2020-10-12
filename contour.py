@@ -27,6 +27,13 @@ import math
 
 #%% Connects points in 2D space with straight line (fills the gap between coordinates of points in the input array)
 def points_connect(input_array, *args):
+  ''' Connects points in 2D space with straight line (fills the gap between coordinates of points in the input array)
+  points_connect(input_array, ...) - input_array is a list of coordinates of the points in tuple format (x,y), 
+                                      i.e [(x1, y1), (x2, y2), ...];
+  points_connect(input_array, 'contour') - will also connect the first and the last point of the array to create 
+                                              a closed contour
+  points_connect(input_array, 'contour', 'unique') - will remove repeating points
+  '''  
   contour = 0  
   unique_var = 0
   
@@ -104,6 +111,12 @@ def points_connect(input_array, *args):
     return p_unique
 #%% rearanges points in input array so they every next point is the closest one to the previous
 def points_arrange(input_array, *args):
+    '''rearanges points in input array so they every next point is the closest one to the previous
+    points_arrange(input_array,...) - input_array is a list of coordinates of the points in tuple format (x,y), 
+                                      i.e [(x1, y1), (x2, y2), ...];
+    points_arrange(input_array, 5) - index of the starting point, i.e. point #5 of the input array will become #1 
+                                        in the output array.
+    '''
     if len(args) > 0:
         start_ind = list(args)[0]
     else:
@@ -136,7 +149,10 @@ def points_arrange(input_array, *args):
 
 #%% calculates curvature of the array of points (x,y)
 def curvature2D(input_array):
-    
+    ''' calculates curvature of the array of points (x,y) 
+    output:
+        curvature, tangent component, norm component, acceleration
+    '''
     if numpy.shape(input_array)[1] != 2:
         print('Input array must be n by 2 size (X and Y Cartesian coordinates)')
     else:
@@ -169,6 +185,10 @@ def curvature2D(input_array):
 #%% mean filter
     
 def smooth_mean(y, box_pts):
+    ''' 
+    smooth_mean(y, box_pts) performs mean filter on input array y
+    box_pts - length of the filter window
+    '''
     box = numpy.ones(box_pts)/box_pts
     y_smooth = numpy.convolve(y, box, mode='same')
     return y_smooth
@@ -177,6 +197,11 @@ def smooth_mean(y, box_pts):
 #%% calculates center of mass of the 2D object
     
 def centre_mass2D(input_array_xy, *args, **kwargs):
+    ''' centre_mass2D(input_array_xy, ...)
+    calculates coordinates of the center of mass of the 2D array
+    centre_mass2D(input_array_xy, dtype='round') will round up values of coordinates
+    '''
+    
     data_type = numpy.float
     input_array = numpy.array(input_array_xy)
     for key, vals in kwargs.items():
@@ -200,7 +225,8 @@ def centre_mass2D(input_array_xy, *args, **kwargs):
 #%% calculates distance between points in two arrays (x1,y1) <-> (x2,y2). Input array 2 can be a single point (x,y)
     
 def point_distance(input_array1, input_array2):
-        
+    '''point_distance(input_array1, input_array2)
+    calculates distance between points in two arrays (x1,y1) <-> (x2,y2). Input array 2 can be a single point (x,y) '''
     input_array1_xy = numpy.array(input_array1)
     
     if numpy.size(input_array2)>2:
@@ -221,6 +247,14 @@ def point_distance(input_array1, input_array2):
 #%% Calculates ellyptic fourier transformation coefficients
 
 def EllFT_coef(input_array, N,*args):
+    '''EllFT_coef(input_array, N, ...)
+    Calculates ellyptic fourier transformation coefficients, N - number of coefficients to calculate
+    EllFT_coef(input_array, N, 'loco', ...) - makes coefficients invariant to the starting point on the contour
+    EllFT_coef(input_array, N, 'full', ...) - calculates A0 coefficient,
+    i.e. xy shift of the contour if its center is not at (0,0)
+    details on EFT-LOCO can be found in the following paper:
+        Y.Sánchez-Corrales et al. Development 2018, doi: 10.1242/dev.156778 
+    '''
     loco = 0
     full_coef = 0
     for vals in args:
@@ -334,6 +368,12 @@ def EllFT_coef(input_array, N,*args):
 
 #%%
 def iEllFT_coef(A0, An, N, init_xy, **kwargs):
+    '''iEllFT_coef(A0, An, N, init_xy,...)
+    Performs inversed Elliptic fourier transformation
+    A0, An, N - correspond to the outputs of EllFT_coef(), A0 - center shift, An - EFT coefficients, 
+    N - number coefficients to use. 
+    init_xy - initial contour coordinates to calculate its step length and conulative length
+    '''
     for key, vals in kwargs.items():
         if key == 'dtype':
             data_type = vals  
