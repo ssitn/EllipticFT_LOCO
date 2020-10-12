@@ -22,7 +22,7 @@ import contour as ct
 
 
 
-path = 'C:\\Users\\slsit\\DATA\\Python_Scripts\\cell_profiler_test\\test\\object_bin_masks'
+
 
 im_arr = np.array(cv2.imread(os.getcwd() + '\\' + 'obj_2.tiff', cv2.IMREAD_GRAYSCALE), dtype = np.int16)
 
