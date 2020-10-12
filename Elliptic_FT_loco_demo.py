@@ -3,6 +3,11 @@
 Created on Thu May 16 11:45:53 2019
 
 @author: Sergey Sitnikov s.l.sitnikov@gmail.com
+
+This script is to demonstrate the use of Elliptic fourier transform. Please use obj_1-4 tiff files for a test or 
+upload your own binary object mask. 
+
+
 """
 
 import numpy as np
@@ -14,16 +19,16 @@ import cv2
 from matplotlib import pyplot as plt
 from operator import itemgetter
 import contour as ct
-#from Python_Scripts.cell_profiler_test.test.asd import contour as ct
-#from asd import contour as ct
+
 
 
 path = 'C:\\Users\\slsit\\DATA\\Python_Scripts\\cell_profiler_test\\test\\object_bin_masks'
 
-im_arr = np.array(cv2.imread(path + '\\' + 'obj_4.tiff', cv2.IMREAD_GRAYSCALE), dtype = np.int16)
-cv2.imshow('figure1', cv2.resize(np.array(im_arr, dtype=np.uint8), (800,800)))
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+im_arr = np.array(cv2.imread(os.getcwd() + '\\' + 'obj_2.tiff', cv2.IMREAD_GRAYSCALE), dtype = np.int16)
+
+#cv2.imshow('figure1', cv2.resize(np.array(im_arr, dtype=np.uint8), (800,800)))
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
 
 im_obj = np.array(np.where(im_arr>0)).transpose()
 
